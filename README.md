@@ -57,13 +57,23 @@ Las variables más relevantes fueron:
 - NH3
 - Temperatura
 
+### Modelo Random Forest
+![Resultados RF](images/Resultados Random Forest (modelo principal).png)
+
+### Modelo Baseline
+![Resultados Baseline](Resultados Decision Tree (baseline).png)
+
 ---
 
 ## Estructura del repositorio
 
 /notebooks
-01_modelo_principal.ipynb
-02_baseline_modelo.ipynb
+    01_modelo_principal.ipynb
+    02_baseline_modelo.ipynb
+
+/images
+    rf_results.png
+    baseline_results.png
 
 Base_de_datos_CA.xlsx
 
