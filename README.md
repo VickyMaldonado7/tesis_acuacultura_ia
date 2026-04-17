@@ -72,8 +72,8 @@ Las variables más relevantes fueron:
     02_baseline_modelo.ipynb
 
 /images
-    rf_results.png
-    baseline_results.png
+    Resultados Random Forest (modelo principal).png
+    Resultados Decision Tree (baseline).png
 
 Base_de_datos_CA.xlsx
 
