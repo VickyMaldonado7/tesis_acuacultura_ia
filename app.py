@@ -26,4 +26,14 @@ if st.button("Predecir"):
 
     pred = modelo.predict(data)[0]
 
-    st.success(f"Nivel de riesgo: {pred}")
+if pred == "ALTO":
+    st.error(f"⚠️ Nivel de riesgo: {pred}")
+    st.error("Recomendación: revisar amonio y considerar recambio de agua inmediato.")
+
+elif pred == "MEDIO":
+    st.warning(f"⚠️ Nivel de riesgo: {pred}")
+    st.warning("Recomendación: monitorear parámetros críticos.")
+
+else:
+    st.success(f"✅ Nivel de riesgo: {pred}")
+    st.success("Condiciones estables.")
