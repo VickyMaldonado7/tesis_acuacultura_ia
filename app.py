@@ -31,19 +31,19 @@ with col2:
 st.markdown("")
 
 if st.button("Predecir riesgo"):
-    data = pd.DataFrame([[tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np]],
-                        columns=["TAN","NH3T","NO2","NO3","PO4","SULFURO","ALK","PH","TEMP","SALINIDAD","R_NP"])
+    data = pd.DataFrame(
+        [[tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np]],
+        columns=["TAN", "NH3T", "NO2", "NO3", "PO4", "SULFURO", "ALK", "PH", "TEMP", "SALINIDAD", "R_NP"]
+    )
 
     pred = modelo.predict(data)[0]
 
-if pred == "ALTO":
-    st.error(f"⚠️ Nivel de riesgo: {pred}")
-    st.error("Recomendación: revisar amonio y considerar recambio de agua inmediato.")
-
-elif pred == "MEDIO":
-    st.warning(f"⚠️ Nivel de riesgo: {pred}")
-    st.warning("Recomendación: monitorear parámetros críticos.")
-
-else:
-    st.success(f"✅ Nivel de riesgo: {pred}")
-    st.success("Condiciones estables.")
+    if pred == "ALTO":
+        st.error(f"⚠️ Nivel de riesgo: {pred}")
+        st.error("Recomendación: revisar amonio y considerar recambio de agua inmediato.")
+    elif pred == "MEDIO":
+        st.warning(f"⚠️ Nivel de riesgo: {pred}")
+        st.warning("Recomendación: monitorear parámetros críticos.")
+    else:
+        st.success(f"✅ Nivel de riesgo: {pred}")
+        st.success("Condiciones estables.")
