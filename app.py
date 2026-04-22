@@ -14,19 +14,19 @@ st.markdown(
 col1, col2 = st.columns(2)
 
 with col1:
-tan = st.number_input("TAN")
-nh3 = st.number_input("NH3")
-no2 = st.number_input("NO2")
-no3 = st.number_input("NO3")
-po4 = st.number_input("PO4")
-sulfuro = st.number_input("Sulfuro")
+    tan = st.number_input("TAN", format="%.3f")
+    nh3 = st.number_input("NH3", format="%.3f")
+    no2 = st.number_input("NO2", format="%.3f")
+    no3 = st.number_input("NO3", format="%.3f")
+    po4 = st.number_input("PO4", format="%.3f")
+    sulfuro = st.number_input("Sulfuro", format="%.3f")
 
 with col2:
-alk = st.number_input("Alcalinidad")
-ph = st.number_input("pH")
-temp = st.number_input("Temperatura")
-salinidad = st.number_input("Salinidad")
-r_np = st.number_input("Relación N:P")
+    alk = st.number_input("Alcalinidad", format="%.2f")
+    ph = st.number_input("pH", format="%.2f")
+    temp = st.number_input("Temperatura", format="%.2f")
+    salinidad = st.number_input("Salinidad", format="%.2f")
+    r_np = st.number_input("Relación N:P", format="%.2f")
 
 st.markdown("")
 
