@@ -115,9 +115,9 @@ with col_inputs:
         no3 = st.number_input("NO3", format="%.3f")
         po4 = st.number_input("PO4", format="%.3f")
         sulfuro = st.number_input("Sulfuro", format="%.3f")
+        alk = st.number_input("Alcalinidad", format="%.2f")
 
     with col2:
-        alk = st.number_input("Alcalinidad", format="%.2f")
         ph = st.number_input("pH", format="%.2f")
         temp = st.number_input("Temperatura", format="%.2f")
         salinidad = st.number_input("Salinidad", format="%.2f")
