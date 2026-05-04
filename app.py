@@ -2,6 +2,44 @@ import streamlit as st
 import pandas as pd
 import joblib
 
+def validar_inputs(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np):
+    errores = []
+
+    if tan < 0 or tan > 15:
+        errores.append(f"TAN = {tan} fuera de rango (0 - 15)")
+
+    if nh3 < 0 or nh3 > 1:
+        errores.append(f"NH3T = {nh3} fuera de rango (0 - 1)")
+
+    if no2 < 0 or no2 > 20:
+        errores.append(f"NO2 = {no2} fuera de rango (0 - 20)")
+
+    if no3 < 0 or no3 > 20:
+        errores.append(f"NO3 = {no3} fuera de rango (0 - 20)")
+
+    if po4 < 0 or po4 > 20:
+        errores.append(f"PO4 = {po4} fuera de rango (0 - 20)")
+
+    if sulfuro < 0 or sulfuro > 5:
+        errores.append(f"SULFURO = {sulfuro} fuera de rango (0 - 5)")
+
+    if alk < 0 or alk > 800:
+        errores.append(f"ALK = {alk} fuera de rango (0 - 800)")
+
+    if ph < 4 or ph > 11:
+        errores.append(f"pH = {ph} fuera de rango (4 - 11)")
+
+    if temp < 5 or temp > 50:
+        errores.append(f"TEMP = {temp} fuera de rango (5 - 50 °C)")
+
+    if salinidad < 0 or salinidad > 50:
+        errores.append(f"SALINIDAD = {salinidad} fuera de rango (0 - 50)")
+
+    if r_np < 0 or r_np > 40:
+        errores.append(f"Relación N:P = {r_np} fuera de rango (0 - 40)")
+
+    return errores
+
 def generar_recomendacion(row):
 
     desviaciones = {}
@@ -55,7 +93,6 @@ def generar_recomendacion(row):
     }
 
     return recomendaciones.get(peor, "Revisar condiciones generales.")
-
 
 modelo = joblib.load("modelo_rf.pkl")
 
@@ -219,6 +256,16 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
     return alertas_principales, recomendacion_general
 
 if st.button("Predecir riesgo"):
+
+    errores = validar_inputs(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np)
+
+    if errores:
+        st.error("⚠️ Se detectaron valores inconsistentes. Verifique el/los siguientes parámetros:")
+        for error in errores:
+            st.write(f"• {error}")
+        st.info("💡 Estos valores son poco probables en condiciones reales o pueden indicar error de medición.")
+        st.stop()
+
     data = pd.DataFrame(
         [[tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np]],
         columns=["TAN", "NH3T", "NO2", "NO3", "PO4", "SULFURO", "ALK", "PH", "TEMP", "SALINIDAD", "R_NP"]
