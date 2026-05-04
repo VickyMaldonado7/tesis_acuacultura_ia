@@ -103,22 +103,28 @@ st.markdown(
     "Ingrese los parámetros de calidad de agua para estimar el nivel de riesgo sanitario."
 )
 
-col1, col2 = st.columns(2)
+col_inputs, col_img = st.columns([2, 1])
 
-with col1:
-    tan = st.number_input("TAN", format="%.3f")
-    nh3 = st.number_input("NH3", format="%.3f")
-    no2 = st.number_input("NO2", format="%.3f")
-    no3 = st.number_input("NO3", format="%.3f")
-    po4 = st.number_input("PO4", format="%.3f")
-    sulfuro = st.number_input("Sulfuro", format="%.3f")
+with col_inputs:
+    col1, col2 = st.columns(2)
 
-with col2:
-    alk = st.number_input("Alcalinidad", format="%.2f")
-    ph = st.number_input("pH", format="%.2f")
-    temp = st.number_input("Temperatura", format="%.2f")
-    salinidad = st.number_input("Salinidad", format="%.2f")
-    r_np = st.number_input("Relación N:P", format="%.2f")
+    with col1:
+        tan = st.number_input("TAN", format="%.3f")
+        nh3 = st.number_input("NH3", format="%.3f")
+        no2 = st.number_input("NO2", format="%.3f")
+        no3 = st.number_input("NO3", format="%.3f")
+        po4 = st.number_input("PO4", format="%.3f")
+        sulfuro = st.number_input("Sulfuro", format="%.3f")
+
+    with col2:
+        alk = st.number_input("Alcalinidad", format="%.2f")
+        ph = st.number_input("pH", format="%.2f")
+        temp = st.number_input("Temperatura", format="%.2f")
+        salinidad = st.number_input("Salinidad", format="%.2f")
+        r_np = st.number_input("Relación N:P", format="%.2f")
+
+with col_img:
+    st.image("assets/Infografia_camaron.png", use_container_width=True)
 
 st.markdown("")
 
