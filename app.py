@@ -306,13 +306,40 @@ if st.button("Predecir riesgo"):
         direccion = alerta["direccion"]
 
         variables_criticas.append(f"{parametro} {direccion}")
-
+    
     if pred == "ALTO":
-        st.error(f"🔴 Nivel de riesgo: {pred} ({confianza:.1f}%)")
+        color = "#ff4b4b"
+        icono = "🔴"
     elif pred == "MEDIO":
-        st.warning(f"🟡 Nivel de riesgo: {pred} ({confianza:.1f}%)")
+        color = "#f5c542"
+        icono = "🟡"
     else:
-        st.success(f"🟢 Nivel de riesgo: {pred} ({confianza:.1f}%)")
+        color = "#2ecc71"
+        icono = "🟢"
+
+    st.markdown(
+        f"""
+        <div style="
+            background-color:{color};
+            padding:18px;
+            border-radius:10px;
+            color:black;
+            font-size:20px;
+            font-weight:bold;
+            margin-top:20px;
+            margin-bottom:20px;">
+            {icono} Nivel de riesgo: {pred} ({confianza:.1f}%)
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+#    if pred == "ALTO":
+#        st.error(f"🔴 Nivel de riesgo: {pred} ({confianza:.1f}%)")
+#    elif pred == "MEDIO":
+#        st.warning(f"🟡 Nivel de riesgo: {pred} ({confianza:.1f}%)")
+#    else:
+#        st.success(f"🟢 Nivel de riesgo: {pred} ({confianza:.1f}%)")
 
 #    st.subheader("Variables críticas")
 
