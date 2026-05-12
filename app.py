@@ -320,6 +320,12 @@ if st.button("Predecir riesgo"):
         tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np, pred
     )
 
+    st.session_state["data"] = data
+    st.session_state["pred"] = pred
+    st.session_state["confianza"] = confianza
+    st.session_state["recomendacion_general"] = recomendacion_general
+    st.session_state["alertas_principales"] = alertas_principales
+
     variables_criticas = []
 
     for alerta in alertas_principales:
