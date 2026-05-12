@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import joblib
 
+from datetime import datetime
+import os
+
 def validar_inputs(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np):
     errores = []
 
