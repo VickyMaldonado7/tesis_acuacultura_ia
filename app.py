@@ -276,6 +276,24 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
 
     return alertas_principales, recomendacion_general
 
+# Guardar registros nuevos
+def guardar_caso(data, pred, confianza, recomendacion_general, alertas_principales):
+    archivo = "historial_predicciones.csv"
+
+    registro = data.copy()
+    registro["PREDICCION_NRS"] = pred
+    registro["CONFIANZA_MODELO"] = round(confianza, 2)
+    registro["RECOMENDACION_GENERAL"] = recomendacion_general
+    registro["ALERTAS_PRINCIPALES"] = "; ".join(
+        [f"{a['parametro']} {a['direccion']}: {a['mensaje']}" for a in alertas_principales]
+    )
+    registro["FECHA_REGISTRO"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    if os.path.exists(archivo):
+        registro.to_csv(archivo, mode="a", header=False, index=False)
+    else:
+        registro.to_csv(archivo, index=False)
+
 if st.button("Predecir riesgo"):
 
     errores = validar_inputs(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np)
@@ -369,4 +387,8 @@ if st.button("Predecir riesgo"):
             st.write(f"Recomendación: {alerta['recomendacion']}")
     else:
         st.success("No se detectaron desviaciones relevantes en los parámetros ingresados.")
+
+if st.button("Guardar caso"):
+    guardar_caso(data, pred, confianza, recomendacion_general, alertas_principales)
+    st.success("Caso guardado correctamente para futura retroalimentación y reentrenamiento.")
 
