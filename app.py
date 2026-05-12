@@ -40,59 +40,59 @@ def validar_inputs(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r
 
     return errores
 
-def generar_recomendacion(row):
+#def generar_recomendacion(row):
 
-    desviaciones = {}
+#    desviaciones = {}
 
-    if row["TAN"] > 1:
-        desviaciones["TAN"] = row["TAN"] / 1
+#    if row["TAN"] > 1:
+#        desviaciones["TAN"] = row["TAN"] / 1
 
-    if row["NH3T"] > 0.1:
-        desviaciones["NH3T"] = row["NH3T"] / 0.1
+#    if row["NH3T"] > 0.1:
+#        desviaciones["NH3T"] = row["NH3T"] / 0.1
 
-    if row["NO2"] > 0.66:
-        desviaciones["NO2"] = row["NO2"] / 0.66
+#    if row["NO2"] > 0.66:
+#        desviaciones["NO2"] = row["NO2"] / 0.66
 
-    if row["NO3"] > 3.1:
-        desviaciones["NO3"] = row["NO3"] / 3.1
+#    if row["NO3"] > 3.1:
+#        desviaciones["NO3"] = row["NO3"] / 3.1
 
-    if row["PO4"] > 0.3:
-        desviaciones["PO4"] = row["PO4"] / 0.3
+#    if row["PO4"] > 0.3:
+#        desviaciones["PO4"] = row["PO4"] / 0.3
 
-    if row["SULFURO"] > 0.1:
-        desviaciones["SULFURO"] = row["SULFURO"] / 0.1
+#    if row["SULFURO"] > 0.1:
+#        desviaciones["SULFURO"] = row["SULFURO"] / 0.1
 
-    if row["ALK"] < 200:
-        desviaciones["ALK"] = 200 / max(row["ALK"], 1)
+#    if row["ALK"] < 200:
+#        desviaciones["ALK"] = 200 / max(row["ALK"], 1)
 
-    if row["PH"] < 7.8 or row["PH"] > 8.2:
-        desviaciones["PH"] = abs(row["PH"] - 8)
+#    if row["PH"] < 7.8 or row["PH"] > 8.2:
+#        desviaciones["PH"] = abs(row["PH"] - 8)
 
-    if row["TEMP"] < 28 or row["TEMP"] > 32:
-        desviaciones["TEMP"] = abs(row["TEMP"] - 30)
+#    if row["TEMP"] < 28 or row["TEMP"] > 32:
+#        desviaciones["TEMP"] = abs(row["TEMP"] - 30)
 
-    if row["R_NP"] != 20:
-        desviaciones["R_NP"] = abs(row["R_NP"] - 20)
+#    if row["R_NP"] != 20:
+#        desviaciones["R_NP"] = abs(row["R_NP"] - 20)
 
-    if len(desviaciones) == 0:
-        return "Todos los parámetros dentro de rangos óptimos."
+#    if len(desviaciones) == 0:
+#        return "Todos los parámetros dentro de rangos óptimos."
 
-    peor = max(desviaciones, key=desviaciones.get)
+#    peor = max(desviaciones, key=desviaciones.get)
 
-    recomendaciones = {
-        "TAN": "Reducir carga orgánica, aplicar biorremediación y evaluar alimentación.",
-        "NH3T": "Aumentar recambio de agua y mejorar aireación.",
-        "NO2": "Aplicar bacterias nitrificantes.",
-        "NO3": "Controlar acumulación de nutrientes.",
-        "PO4": "Reducir fosfatos mediante manejo de alimentación.",
-        "SULFURO": "Mejorar oxigenación del fondo.",
-        "ALK": "Aplicar carbonatos para estabilizar alcalinidad.",
-        "PH": "Ajustar pH gradualmente.",
-        "TEMP": "Monitorear temperatura.",
-        "R_NP": "Corregir balance nutricional N:P."
-    }
+#    recomendaciones = {
+#        "TAN": "Reducir carga orgánica, aplicar biorremediación y evaluar alimentación.",
+#        "NH3T": "Aumentar recambio de agua y mejorar aireación.",
+#        "NO2": "Aplicar bacterias nitrificantes.",
+#        "NO3": "Controlar acumulación de nutrientes.",
+#        "PO4": "Reducir fosfatos mediante manejo de alimentación.",
+#        "SULFURO": "Mejorar oxigenación del fondo.",
+#        "ALK": "Aplicar carbonatos para estabilizar alcalinidad.",
+#        "PH": "Ajustar pH gradualmente.",
+#        "TEMP": "Monitorear temperatura.",
+#        "R_NP": "Corregir balance nutricional N:P."
+#    }
 
-    return recomendaciones.get(peor, "Revisar condiciones generales.")
+#    return recomendaciones.get(peor, "Revisar condiciones generales.")
 
 modelo = joblib.load("modelo_rf.pkl")
 
@@ -137,7 +137,7 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "TAN",
             "severidad": 5,
             "mensaje": "TAN por encima del rango aceptable",
-            "recomendacion": "Revisar acumulación de materia orgánica y reforzar biorremediación de agua y suelo."
+            "recomendacion": "Reducir carga orgánica, aplicar biorremediación al suelo y evaluar alimentación."
         })
 
     # NH3T
@@ -146,7 +146,7 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "NH3T",
             "severidad": 5,
             "mensaje": "NH3T por encima del rango aceptable",
-            "recomendacion": "Priorizar reducción de amonio tóxico; validar medición, mejorar oxigenación y evaluar recambio parcial."
+            "recomendacion": "Aumentar recambio de agua y mejorar aireación."
         })
 
     # NO2
@@ -155,7 +155,7 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "NO2",
             "severidad": 4,
             "mensaje": "NO2 por encima del rango aceptable",
-            "recomendacion": "Revisar proceso de nitrificación y reforzar manejo bacteriano del sistema."
+            "recomendacion": "Aplicar bacterias nitrificantes al agua."
         })
 
     # NO3
@@ -164,7 +164,7 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "NO3",
             "severidad": 3,
             "mensaje": "NO3 por encima del rango aceptable",
-            "recomendacion": "Monitorear acumulación de nitratos y revisar balance del sistema nitrogenado."
+            "recomendacion": "Aplicar biorrmediacion al agua para controlar acumulación de nutrientes."
         })
 
     # PO4
@@ -173,7 +173,7 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "PO4",
             "severidad": 4,
             "mensaje": "PO4 por encima del rango aceptable",
-            "recomendacion": "Revisar carga orgánica, fertilización y balance de nutrientes; priorizar reducción de fosfatos."
+            "recomendacion": "Aplicar bacterias al agua para reducir fosfatos."
         })
 
     # Sulfuro
@@ -182,7 +182,7 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "SULFURO",
             "severidad": 5,
             "mensaje": "Sulfuro por encima del rango aceptable",
-            "recomendacion": "Evaluar condición de fondo, acumulación de lodos y necesidad de tratamiento de suelo."
+            "recomendacion": "Mejorar oxigenación del fondo."
         })
 
     # Alcalinidad
@@ -191,7 +191,7 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "ALK",
             "severidad": 3,
             "mensaje": "Alcalinidad por debajo del rango aceptable",
-            "recomendacion": "Corregir alcalinidad para mejorar estabilidad del pH y capacidad buffer del sistema."
+            "recomendacion": "Aplicar carbonatos para estabilizar alcalinidad."
         })
 
     # pH
@@ -223,11 +223,10 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "TEMP",
             "severidad": 4,
             "mensaje": "Temperatura por encima del rango ideal",
-            "recomendacion": "Incrementar monitoreo de oxígeno, estrés del camarón y riesgo sanitario."
+            "recomendacion": "Fertilizar para oscurecer el agua y conservar temperatura baja en el fondo."
         })
 
     # Salinidad
-    # No se asigna alerta directa porque depende del balance iónico.
     if salinidad <= 2:
         alertas.append({
             "parametro": "SALINIDAD",
@@ -279,16 +278,25 @@ if st.button("Predecir riesgo"):
 
     pred = modelo.predict(data)[0]
 
+    probabilidades = modelo.predict_proba(data)[0]
+
     alertas_principales, recomendacion_general = generar_recomendaciones(
         tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np, pred
     )
 
     if pred == "ALTO":
-        st.error(f"⚠️ Nivel de riesgo: {pred}")
+        st.error(f"🔴 Nivel de riesgo: {pred}")
     elif pred == "MEDIO":
-        st.warning(f"⚠️ Nivel de riesgo: {pred}")
+        st.warning(f"🟡 Nivel de riesgo: {pred}")
     else:
-        st.success(f"✅ Nivel de riesgo: {pred}")
+        st.success(f"🟢 Nivel de riesgo: {pred}")
+
+    clases = modelo.classes_
+
+    st.subheader("Confianza del modelo")
+
+    for clase, prob in zip(clases, probabilidades):
+        st.write(f"{clase}: {prob*100:.1f}%")
 
     st.subheader("Recomendación general")
     st.write(recomendacion_general)
