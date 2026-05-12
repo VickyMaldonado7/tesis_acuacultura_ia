@@ -395,6 +395,15 @@ if st.button("Predecir riesgo"):
         st.success("No se detectaron desviaciones relevantes en los parámetros ingresados.")
 
 if st.button("Guardar caso"):
-    guardar_caso(data, pred, confianza, recomendacion_general, alertas_principales)
-    st.success("Caso guardado correctamente para futura retroalimentación y reentrenamiento.")
+    if "data" in st.session_state:
+        guardar_caso(
+            st.session_state["data"],
+            st.session_state["pred"],
+            st.session_state["confianza"],
+            st.session_state["recomendacion_general"],
+            st.session_state["alertas_principales"]
+        )
+        st.success("Caso guardado correctamente para futuro reentrenamiento.")
+    else:
+        st.warning("Primero debe ejecutar una predicción antes de guardar el caso.")
 
