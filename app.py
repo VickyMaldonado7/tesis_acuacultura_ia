@@ -137,7 +137,8 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "TAN",
             "severidad": 5,
             "mensaje": "TAN por encima del rango aceptable",
-            "recomendacion": "Reducir carga orgánica, aplicar biorremediación al suelo y evaluar alimentación."
+            "recomendacion": "Reducir carga orgánica, aplicar biorremediación al suelo y evaluar alimentación.",
+            "direccion": "↑"
         })
 
     # NH3T
@@ -146,7 +147,8 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "NH3T",
             "severidad": 5,
             "mensaje": "NH3T por encima del rango aceptable",
-            "recomendacion": "Aumentar recambio de agua y mejorar aireación."
+            "recomendacion": "Aumentar recambio de agua y mejorar aireación.",
+            "direccion": "↑"
         })
 
     # NO2
@@ -155,7 +157,8 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "NO2",
             "severidad": 4,
             "mensaje": "NO2 por encima del rango aceptable",
-            "recomendacion": "Aplicar bacterias nitrificantes al agua."
+            "recomendacion": "Aplicar bacterias nitrificantes al agua.",
+            "direccion": "↑"
         })
 
     # NO3
@@ -164,7 +167,8 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "NO3",
             "severidad": 3,
             "mensaje": "NO3 por encima del rango aceptable",
-            "recomendacion": "Aplicar biorrmediacion al agua para controlar acumulación de nutrientes."
+            "recomendacion": "Aplicar biorrmediacion al agua para controlar acumulación de nutrientes.",
+            "direccion": "↑"
         })
 
     # PO4
@@ -173,7 +177,8 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "PO4",
             "severidad": 4,
             "mensaje": "PO4 por encima del rango aceptable",
-            "recomendacion": "Aplicar bacterias al agua para reducir fosfatos."
+            "recomendacion": "Aplicar bacterias al agua para reducir fosfatos.",
+            "direccion": "↑"
         })
 
     # Sulfuro
@@ -182,7 +187,8 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "SULFURO",
             "severidad": 5,
             "mensaje": "Sulfuro por encima del rango aceptable",
-            "recomendacion": "Mejorar oxigenación del fondo."
+            "recomendacion": "Mejorar oxigenación del fondo.",
+            "direccion": "↑"
         })
 
     # Alcalinidad
@@ -191,7 +197,8 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "ALK",
             "severidad": 3,
             "mensaje": "Alcalinidad por debajo del rango aceptable",
-            "recomendacion": "Aplicar carbonatos para estabilizar alcalinidad."
+            "recomendacion": "Aplicar carbonatos para estabilizar alcalinidad.",
+            "direccion": "↓"
         })
 
     # pH
@@ -200,14 +207,16 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "pH",
             "severidad": 2,
             "mensaje": "pH por debajo del rango informativo ideal",
-            "recomendacion": "Monitorear estabilidad del sistema y revisar alcalinidad."
+            "recomendacion": "Monitorear estabilidad del sistema y revisar alcalinidad.",
+            "direccion": "↓"
         })
     elif ph > 8.2:
         alertas.append({
             "parametro": "pH",
             "severidad": 3,
             "mensaje": "pH por encima del rango informativo ideal",
-            "recomendacion": "Monitorear riesgo de mayor toxicidad del amonio y revisar manejo de fitoplancton."
+            "recomendacion": "Monitorear riesgo de mayor toxicidad del amonio y revisar manejo de fitoplancton.",
+            "direccion": "↑"
         })
 
     # Temperatura
@@ -216,14 +225,16 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "TEMP",
             "severidad": 2,
             "mensaje": "Temperatura por debajo del rango ideal",
-            "recomendacion": "Considerar menor actividad metabólica y ajustar expectativas de consumo y crecimiento."
+            "recomendacion": "Considerar menor actividad metabólica y ajustar expectativas de consumo y crecimiento.",
+            "direccion": "↓"
         })
     elif temp > 32:
         alertas.append({
             "parametro": "TEMP",
             "severidad": 4,
             "mensaje": "Temperatura por encima del rango ideal",
-            "recomendacion": "Fertilizar para oscurecer el agua y conservar temperatura baja en el fondo."
+            "recomendacion": "Fertilizar para oscurecer el agua y conservar temperatura baja en el fondo.",
+            "direccion": "↑"
         })
 
     # Salinidad
@@ -232,7 +243,8 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "SALINIDAD",
             "severidad": 2,
             "mensaje": "Salinidad muy baja",
-            "recomendacion": "En agua dulce o baja salinidad, revisar balance iónico, especialmente calcio, magnesio y potasio."
+            "recomendacion": "En agua dulce o baja salinidad, revisar balance iónico, especialmente calcio, magnesio y potasio.",
+            "direccion": "↓"
         })
 
     # Relación N:P
@@ -241,7 +253,8 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "parametro": "R_NP",
             "severidad": 4,
             "mensaje": "Relación N:P por debajo del ideal",
-            "recomendacion": "Revisar exceso relativo de fosfato y priorizar acciones para mejorar el balance nitrógeno:fósforo."
+            "recomendacion": "Revisar exceso relativo de fosfato y priorizar acciones para mejorar el balance nitrógeno:fósforo.",
+            "direccion": "↓"
         })
 
     # Ordenar por severidad
@@ -286,12 +299,27 @@ if st.button("Predecir riesgo"):
         tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np, pred
     )
 
+    variables_criticas = []
+
+    for alerta in alertas_principales:
+        parametro = alerta["parametro"]
+        direccion = alerta["direccion"]
+
+        variables_criticas.append(f"{parametro} {direccion}")
+
     if pred == "ALTO":
         st.error(f"🔴 Nivel de riesgo: {pred} ({confianza:.1f}%)")
     elif pred == "MEDIO":
         st.warning(f"🟡 Nivel de riesgo: {pred} ({confianza:.1f}%)")
     else:
         st.success(f"🟢 Nivel de riesgo: {pred} ({confianza:.1f}%)")
+
+    st.subheader("Variables críticas")
+
+    if variables_criticas:
+        st.write(", ".join(variables_criticas))
+    else:
+        st.success("No se detectaron variables críticas relevantes.")
 
 #    clases = modelo.classes_
 
