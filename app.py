@@ -280,23 +280,25 @@ if st.button("Predecir riesgo"):
 
     probabilidades = modelo.predict_proba(data)[0]
 
+    confianza = max(probabilidades) * 100
+
     alertas_principales, recomendacion_general = generar_recomendaciones(
         tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np, pred
     )
 
     if pred == "ALTO":
-        st.error(f"🔴 Nivel de riesgo: {pred}")
+        st.error(f"🔴 Nivel de riesgo: {pred} ({confianza:.1f}%)")
     elif pred == "MEDIO":
-        st.warning(f"🟡 Nivel de riesgo: {pred}")
+        st.warning(f"🟡 Nivel de riesgo: {pred} ({confianza:.1f}%)")
     else:
-        st.success(f"🟢 Nivel de riesgo: {pred}")
+        st.success(f"🟢 Nivel de riesgo: {pred} ({confianza:.1f}%)")
 
-    clases = modelo.classes_
+#    clases = modelo.classes_
 
-    st.subheader("Confianza del modelo")
+#    st.subheader("Confianza del modelo")
 
-    for clase, prob in zip(clases, probabilidades):
-        st.write(f"{clase}: {prob*100:.1f}%")
+#    for clase, prob in zip(clases, probabilidades):
+#        st.write(f"{clase}: {prob*100:.1f}%")
 
     st.subheader("Recomendación general")
     st.write(recomendacion_general)
