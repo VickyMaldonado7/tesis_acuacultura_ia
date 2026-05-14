@@ -331,8 +331,7 @@ if st.button("Predecir riesgo"):
         color = "#2ecc71"
         icono = "🟢"
 
-    st.markdown(
-    f"""
+    st.markdown(f"""
     <div style="
         background: linear-gradient(135deg, {color}, #111827);
         padding: 28px;
@@ -341,19 +340,26 @@ if st.button("Predecir riesgo"):
         text-align: center;
         box-shadow: 0 8px 25px rgba(0,0,0,0.25);
         margin-top: 25px;
-        margin-bottom: 28px;">
-        
-        <div style="font-size: 46px; font-weight: 800; margin-bottom: 8px;">
+        margin-bottom: 28px;
+    ">
+
+        <div style="
+            font-size: 46px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        ">
             {icono} RIESGO {pred}
         </div>
-        
-        <div style="font-size: 22px; font-weight: 500;">
+
+        <div style="
+            font-size: 22px;
+            font-weight: 500;
+        ">
             Confianza del modelo: {confianza:.1f}%
         </div>
+
     </div>
-    """,
-    unsafe_allow_html=True
-)
+    """, unsafe_allow_html=True)
 
     st.subheader("Recomendación general")
     st.write(recomendacion_general)
