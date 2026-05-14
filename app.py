@@ -428,18 +428,20 @@ if st.button("Predecir riesgo"):
     col_bar1, col_bar2 = st.columns(2)
 
     with col_bar1:
-        mostrar_barra_parametro("TAN", tan, 0, 1, "mg/L")
-        mostrar_barra_parametro("NH3", nh3, 0, 0.1, "mg/L")
-        mostrar_barra_parametro("NO2", no2, 0, 0.66, "mg/L")
-        mostrar_barra_parametro("NO3", no3, 0, 3.1, "mg/L")
-        mostrar_barra_parametro("PO4", po4, 0, 0.3, "mg/L")
+
+        mostrar_barra_parametro("TAN", tan, 0, 2, 1, "mg/L")
+        mostrar_barra_parametro("NH3", nh3, 0, 0.2, 0.1, "mg/L")
+        mostrar_barra_parametro("NO2", no2, 0, 1, 0.5, "mg/L")
+        mostrar_barra_parametro("NO3", no3, 0, 5, 3.1, "mg/L")
+        mostrar_barra_parametro("PO4", po4, 0, 1.5, 0.3, "mg/L")
 
     with col_bar2:
-        mostrar_barra_parametro("Sulfuro", sulfuro, 0, 0.1, "mg/L")
-        mostrar_barra_parametro("Alcalinidad", alk, 0, 200, "mg/L")
-        mostrar_barra_parametro("pH", ph, 0, 8.2, "")
-        mostrar_barra_parametro("Temperatura", temp, 0, 32, "°C")
-        mostrar_barra_parametro("Relación N:P", r_np, 0, 20, "")
+
+        mostrar_barra_parametro("Sulfuro", sulfuro, 0, 0.2, 0.1, "mg/L")
+        mostrar_barra_parametro("Alcalinidad", alk, 0, 400, 200, "mg/L")
+        mostrar_barra_parametro("pH", ph, 0, 14, 8.5, "")
+        mostrar_barra_parametro("Temperatura", temp, 0, 40, 32, "°C")
+        mostrar_barra_parametro("Relación N:P", r_np, 0, 20, 10, "")
 
     st.subheader("Recomendación general")
     st.write(recomendacion_general)
