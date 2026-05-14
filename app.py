@@ -5,6 +5,38 @@ import joblib
 from datetime import datetime
 import os
 
+st.markdown("""
+<style>
+
+/* Botón principal */
+div.stButton > button:first-child {
+    background-color: #00B894;
+    color: white;
+    border-radius: 12px;
+    height: 3em;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    transition: 0.3s;
+}
+
+/* Hover */
+div.stButton > button:first-child:hover {
+    background-color: #019875;
+    color: white;
+    transform: scale(1.02);
+}
+
+/* Botón secundario */
+div.stButton > button[kind="secondary"] {
+    background-color: #0984E3;
+    color: white;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 def validar_inputs(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np):
     errores = []
 
