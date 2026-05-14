@@ -386,10 +386,10 @@ if st.button("Predecir riesgo"):
         unsafe_allow_html=True
     )
 
-    # Muestra los parametros en barras
+    # Muestra los parametros en barras y el radar
     st.subheader("Lectura rápida de parámetros")
 
-    col_bar1, col_bar2 = st.columns(2)
+    col_bar1, col_bar2, col_radar = st.columns([1.2, 1.2, 1])
 
     with col_bar1:
 
@@ -406,6 +406,61 @@ if st.button("Predecir riesgo"):
         mostrar_barra_parametro("pH", ph, 0, 14, 8.5, "")
         mostrar_barra_parametro("Temperatura", temp, 0, 40, 32, "°C")
         mostrar_barra_parametro("Relación N:P", r_np, 0, 20, 10, "")
+    
+    with col_radar:
+
+        import plotly.graph_objects as go
+
+        categorias = [
+            "TAN", "NH3", "NO2", "NO3", "PO4",
+            "Sulfuro", "Alk", "pH", "Temp", "N:P"
+        ]
+
+        valores = [
+            tan, nh3, no2, no3, po4,
+            sulfuro, alk/400, ph/14, temp/40, r_np/20
+        ]
+
+        limites = [0.5] * len(categorias)
+        fig = go.Figure()
+
+        # Zona ideal
+        fig.add_trace(go.Scatterpolar(
+            r=limites,
+            theta=categorias,
+            fill='toself',
+            name='Rango ideal',
+            line_color='rgba(34,197,94,0.8)',
+            fillcolor='rgba(34,197,94,0.2)'
+        ))
+
+        # Valores actuales
+        fig.add_trace(go.Scatterpolar(
+            r=valores,
+            theta=categorias,
+            fill='toself',
+            name='Lectura actual',
+            line_color='rgba(255,75,75,1)',
+            fillcolor='rgba(255,75,75,0.35)'
+        ))
+
+        fig.update_layout(
+            polar=dict(
+                bgcolor="#0b1020",
+                radialaxis=dict(
+                    visible=False,
+                    range=[0,1]
+                )
+            ),
+            showlegend=False,
+            paper_bgcolor="#0b1020",
+            font_color="white",
+            margin=dict(l=20, r=20, t=20, b=20),
+            height=420
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
 
     st.subheader("Recomendación general")
     st.write(recomendacion_general)
