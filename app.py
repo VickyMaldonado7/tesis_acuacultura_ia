@@ -282,36 +282,66 @@ def guardar_caso(data, pred, confianza, recomendacion_general, alertas_principal
     return numero_caso
 
 # Barras de parametros
-def mostrar_barra_parametro(nombre, valor, minimo, maximo, unidad="", invertido=False):
-    if invertido:
-        porcentaje = max(0, min(1, valor / maximo))
-    else:
-        porcentaje = max(0, min(1, valor / maximo))
+def mostrar_barra_parametro(nombre, valor, minimo, maximo, limite_ideal, unidad=""):
 
-    porcentaje_visual = int(porcentaje * 100)
+    porcentaje = max(0, min(1, valor / maximo))
+    porcentaje_visual = porcentaje * 100
 
-    if porcentaje_visual < 50:
+    limite_visual = (limite_ideal / maximo) * 100
+
+    if valor <= limite_ideal * 0.8:
         color = "#22c55e"
-    elif porcentaje_visual < 80:
+
+    elif valor <= limite_ideal:
         color = "#f0b429"
+
     else:
         color = "#ff4b4b"
 
     st.markdown(
         f"""
-        <div style="margin-bottom:14px;">
-            <div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:4px;">
+        <div style="margin-bottom:18px;">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                font-size:14px;
+                margin-bottom:5px;
+            ">
                 <strong>{nombre}</strong>
                 <span>{valor:.3f} {unidad}</span>
             </div>
-            <div style="background-color:#e5e7eb; border-radius:10px; height:12px;">
+
+            <div style="
+                position:relative;
+                background-color:#e5e7eb;
+                border-radius:10px;
+                height:14px;
+                overflow:hidden;
+            ">
+
+                <!-- Barra -->
                 <div style="
                     width:{porcentaje_visual}%;
                     background-color:{color};
-                    height:12px;
-                    border-radius:10px;">
+                    height:14px;
+                    border-radius:10px;
+                ">
                 </div>
+
+                <!-- Línea límite -->
+                <div style="
+                    position:absolute;
+                    left:{limite_visual}%;
+                    top:0;
+                    width:3px;
+                    height:14px;
+                    background-color:white;
+                ">
+                </div>
+
             </div>
+
         </div>
         """,
         unsafe_allow_html=True
