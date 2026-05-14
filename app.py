@@ -286,66 +286,30 @@ def mostrar_barra_parametro(nombre, valor, minimo, maximo, limite_ideal, unidad=
 
     porcentaje = max(0, min(1, valor / maximo))
     porcentaje_visual = porcentaje * 100
-
     limite_visual = (limite_ideal / maximo) * 100
 
     if valor <= limite_ideal * 0.8:
         color = "#22c55e"
-
     elif valor <= limite_ideal:
         color = "#f0b429"
-
     else:
         color = "#ff4b4b"
 
-    st.markdown(
-        f"""
-        <div style="margin-bottom:18px;">
+    html = f"""
+<div style="margin-bottom:18px;">
+<div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:5px;">
+<strong>{nombre}</strong>
+<span>{valor:.3f} {unidad}</span>
+</div>
 
-            <div style="
-                display:flex;
-                justify-content:space-between;
-                font-size:14px;
-                margin-bottom:5px;
-            ">
-                <strong>{nombre}</strong>
-                <span>{valor:.3f} {unidad}</span>
-            </div>
+<div style="position:relative; background-color:#e5e7eb; border-radius:10px; height:14px; overflow:hidden;">
+<div style="width:{porcentaje_visual}%; background-color:{color}; height:14px; border-radius:10px;"></div>
+<div style="position:absolute; left:{limite_visual}%; top:0; width:3px; height:14px; background-color:white;"></div>
+</div>
+</div>
+"""
 
-            <div style="
-                position:relative;
-                background-color:#e5e7eb;
-                border-radius:10px;
-                height:14px;
-                overflow:hidden;
-            ">
-
-                <!-- Barra -->
-                <div style="
-                    width:{porcentaje_visual}%;
-                    background-color:{color};
-                    height:14px;
-                    border-radius:10px;
-                ">
-                </div>
-
-                <!-- Línea límite -->
-                <div style="
-                    position:absolute;
-                    left:{limite_visual}%;
-                    top:0;
-                    width:3px;
-                    height:14px;
-                    background-color:white;
-                ">
-                </div>
-
-            </div>
-
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    st.markdown(html, unsafe_allow_html=True)
 
 if st.button("Predecir riesgo"):
 
