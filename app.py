@@ -308,6 +308,33 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
 
     return alertas_principales, recomendacion_general
 
+# Guardar registros nuevos
+def guardar_caso(data, pred, confianza, recomendacion_general, alertas_principales):
+    archivo = "data/historial_predicciones.csv"
+
+    if os.path.exists(archivo):
+        historial = pd.read_csv(archivo)
+        numero_caso = len(historial) + 1
+    else:
+        numero_caso = 1
+
+    registro = data.copy()
+    registro["ID_CASO"] = numero_caso
+    registro["PREDICCION_NRS"] = pred
+    registro["CONFIANZA_MODELO"] = round(confianza, 2)
+    registro["RECOMENDACION_GENERAL"] = recomendacion_general
+    registro["ALERTAS_PRINCIPALES"] = "; ".join(
+        [f"{a['parametro']} {a['direccion']}: {a['mensaje']}" for a in alertas_principales]
+    )
+    registro["FECHA_REGISTRO"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    if os.path.exists(archivo):
+        registro.to_csv(archivo, mode="a", header=False, index=False)
+    else:
+        registro.to_csv(archivo, index=False)
+
+    return numero_caso
+
 if st.button("Predecir riesgo"):
 
     errores = validar_inputs(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np)
@@ -333,6 +360,12 @@ if st.button("Predecir riesgo"):
     alertas_principales, recomendacion_general = generar_recomendaciones(
         tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np, pred
     )
+
+    st.session_state["data"] = data
+    st.session_state["pred"] = pred
+    st.session_state["confianza"] = confianza
+    st.session_state["recomendacion_general"] = recomendacion_general
+    st.session_state["alertas_principales"] = alertas_principales
 
     variables_criticas = []
 
@@ -401,4 +434,17 @@ if st.button("Predecir riesgo"):
             st.write(f"Recomendación: {alerta['recomendacion']}")
     else:
         st.success("No se detectaron desviaciones relevantes en los parámetros ingresados.")
+
+if st.button("Guardar caso"):
+    if "data" in st.session_state:
+        numero_caso = guardar_caso(
+            st.session_state["data"],
+            st.session_state["pred"],
+            st.session_state["confianza"],
+            st.session_state["recomendacion_general"],
+            st.session_state["alertas_principales"]
+        )
+        st.success(f"Caso #{numero_caso:03d} guardado correctamente para futuro reentrenamiento.")
+    else:
+        st.warning("Primero debe ejecutar una predicción antes de guardar el caso.")
 

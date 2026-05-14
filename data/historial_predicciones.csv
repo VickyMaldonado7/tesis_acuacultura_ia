@@ -1,0 +1,2 @@
+TAN,NH3T,NO2,NO3,PO4,SULFURO,ALK,PH,TEMP,SALINIDAD,R_NP,ID_CASO,PREDICCION_NRS,CONFIANZA_MODELO,RECOMENDACION_GENERAL,ALERTAS_PRINCIPALES,FECHA_REGISTRO
+1.0,0.176,0.263,1.68,0.93,0.06,326.0,8.5,27.5,5.0,4.03,1,MEDIO,68.0,Mantener monitoreo cercano y corregir los parámetros fuera de rango antes de que el riesgo escale.,TAN ↑: Por encima del rango aceptable; NH3T ↑: Por encima del rango aceptable; PO4 ↑: Por encima del rango aceptable,2026-05-12 22:41:39
