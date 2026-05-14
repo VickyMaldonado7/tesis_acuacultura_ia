@@ -281,7 +281,7 @@ def guardar_caso(data, pred, confianza, recomendacion_general, alertas_principal
 
     return numero_caso
 
-# Barras de parametros
+# Muestra las barras de parametros para una lectura rapida
 def mostrar_barra_parametro(nombre, valor, minimo, maximo, limite_ideal, unidad=""):
 
     porcentaje = max(0, min(1, valor / maximo))
