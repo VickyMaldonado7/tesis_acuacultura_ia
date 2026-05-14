@@ -342,25 +342,19 @@ if st.button("Predecir riesgo"):
             box-shadow: 0 8px 25px rgba(0,0,0,0.25);
             margin-top: 25px;
             margin-bottom: 28px;
+            font-family: Arial, sans-serif;
         ">
-
-            <div style="
-                font-size: 46px;
-                font-weight: 800;
-                margin-bottom: 8px;
-            ">
+            <span style="font-size: 46px; font-weight: 800;">
                 {icono} RIESGO {pred}
-            </div>
-
-            <div style="
-                font-size: 22px;
-                font-weight: 500;
-            ">
+            </span>
+            <br>
+            <span style="font-size: 22px; font-weight: 500;">
                 Confianza del modelo: {confianza:.1f}%
-            </div>
-
+            </span>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True
+    )
 
     st.subheader("Recomendación general")
     st.write(recomendacion_general)
