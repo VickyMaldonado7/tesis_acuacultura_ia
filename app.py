@@ -75,60 +75,6 @@ def validar_inputs(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r
 
     return errores
 
-#def generar_recomendacion(row):
-
-#    desviaciones = {}
-
-#    if row["TAN"] > 1:
-#        desviaciones["TAN"] = row["TAN"] / 1
-
-#    if row["NH3T"] > 0.1:
-#        desviaciones["NH3T"] = row["NH3T"] / 0.1
-
-#    if row["NO2"] > 0.66:
-#        desviaciones["NO2"] = row["NO2"] / 0.66
-
-#    if row["NO3"] > 3.1:
-#        desviaciones["NO3"] = row["NO3"] / 3.1
-
-#    if row["PO4"] > 0.3:
-#        desviaciones["PO4"] = row["PO4"] / 0.3
-
-#    if row["SULFURO"] > 0.1:
-#        desviaciones["SULFURO"] = row["SULFURO"] / 0.1
-
-#    if row["ALK"] < 200:
-#        desviaciones["ALK"] = 200 / max(row["ALK"], 1)
-
-#    if row["PH"] < 7.8 or row["PH"] > 8.2:
-#        desviaciones["PH"] = abs(row["PH"] - 8)
-
-#    if row["TEMP"] < 28 or row["TEMP"] > 32:
-#        desviaciones["TEMP"] = abs(row["TEMP"] - 30)
-
-#    if row["R_NP"] != 20:
-#        desviaciones["R_NP"] = abs(row["R_NP"] - 20)
-
-#    if len(desviaciones) == 0:
-#        return "Todos los parámetros dentro de rangos óptimos."
-
-#    peor = max(desviaciones, key=desviaciones.get)
-
-#    recomendaciones = {
-#        "TAN": "Reducir carga orgánica, aplicar biorremediación y evaluar alimentación.",
-#        "NH3T": "Aumentar recambio de agua y mejorar aireación.",
-#        "NO2": "Aplicar bacterias nitrificantes.",
-#        "NO3": "Controlar acumulación de nutrientes.",
-#        "PO4": "Reducir fosfatos mediante manejo de alimentación.",
-#        "SULFURO": "Mejorar oxigenación del fondo.",
-#        "ALK": "Aplicar carbonatos para estabilizar alcalinidad.",
-#        "PH": "Ajustar pH gradualmente.",
-#        "TEMP": "Monitorear temperatura.",
-#        "R_NP": "Corregir balance nutricional N:P."
-#    }
-
-#    return recomendaciones.get(peor, "Revisar condiciones generales.")
-
 modelo = joblib.load("modelo_rf.pkl")
 
 st.set_page_config(page_title="Asistente Técnico Acuícola IA", layout="wide")
@@ -166,7 +112,7 @@ st.markdown("")
 def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np, pred):
     alertas = []
 
-    # TAN
+    # TAN - NITROGENO AMONIACAL TOTAL
     if tan >= 1:
         alertas.append({
             "parametro": "TAN",
@@ -176,7 +122,7 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "direccion": "↑"
         })
 
-    # NH3T
+    # NH3T - AMONIO TOXICO
     if nh3 >= 0.1:
         alertas.append({
             "parametro": "NH3T",
@@ -186,7 +132,7 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "direccion": "↑"
         })
 
-    # NO2
+    # NO2 - NITRITO
     if no2 >= 0.66:
         alertas.append({
             "parametro": "NO2",
@@ -196,7 +142,7 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "direccion": "↑"
         })
 
-    # NO3
+    # NO3 - NITRATO
     if no3 >= 3.1:
         alertas.append({
             "parametro": "NO3",
@@ -206,7 +152,7 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
             "direccion": "↑"
         })
 
-    # PO4
+    # PO4 - FOSFATO
     if po4 >= 0.3:
         alertas.append({
             "parametro": "PO4",
@@ -386,42 +332,28 @@ if st.button("Predecir riesgo"):
         icono = "🟢"
 
     st.markdown(
-        f"""
-        <div style="
-            background-color:{color};
-            padding:18px;
-            border-radius:10px;
-            color:black;
-            font-size:20px;
-            font-weight:bold;
-            margin-top:20px;
-            margin-bottom:20px;">
-            {icono} Nivel de riesgo: {pred} ({confianza:.1f}%)
+    f"""
+    <div style="
+        background: linear-gradient(135deg, {color}, #111827);
+        padding: 28px;
+        border-radius: 18px;
+        color: white;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        margin-top: 25px;
+        margin-bottom: 28px;">
+        
+        <div style="font-size: 46px; font-weight: 800; margin-bottom: 8px;">
+            {icono} RIESGO {pred}
         </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-#    if pred == "ALTO":
-#        st.error(f"🔴 Nivel de riesgo: {pred} ({confianza:.1f}%)")
-#    elif pred == "MEDIO":
-#        st.warning(f"🟡 Nivel de riesgo: {pred} ({confianza:.1f}%)")
-#    else:
-#        st.success(f"🟢 Nivel de riesgo: {pred} ({confianza:.1f}%)")
-
-#    st.subheader("Variables críticas")
-
-#    if variables_criticas:
-#        st.write(", ".join(variables_criticas))
-#    else:
-#        st.success("No se detectaron variables críticas relevantes.")
-
-#    clases = modelo.classes_
-
-#    st.subheader("Confianza del modelo")
-
-#    for clase, prob in zip(clases, probabilidades):
-#        st.write(f"{clase}: {prob*100:.1f}%")
+        
+        <div style="font-size: 22px; font-weight: 500;">
+            Confianza del modelo: {confianza:.1f}%
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
     st.subheader("Recomendación general")
     st.write(recomendacion_general)
