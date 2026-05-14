@@ -281,6 +281,42 @@ def guardar_caso(data, pred, confianza, recomendacion_general, alertas_principal
 
     return numero_caso
 
+# Barras de parametros
+def mostrar_barra_parametro(nombre, valor, minimo, maximo, unidad="", invertido=False):
+    if invertido:
+        porcentaje = max(0, min(1, valor / maximo))
+    else:
+        porcentaje = max(0, min(1, valor / maximo))
+
+    porcentaje_visual = int(porcentaje * 100)
+
+    if porcentaje_visual < 50:
+        color = "#22c55e"
+    elif porcentaje_visual < 80:
+        color = "#f0b429"
+    else:
+        color = "#ff4b4b"
+
+    st.markdown(
+        f"""
+        <div style="margin-bottom:14px;">
+            <div style="display:flex; justify-content:space-between; font-size:14px; margin-bottom:4px;">
+                <strong>{nombre}</strong>
+                <span>{valor:.3f} {unidad}</span>
+            </div>
+            <div style="background-color:#e5e7eb; border-radius:10px; height:12px;">
+                <div style="
+                    width:{porcentaje_visual}%;
+                    background-color:{color};
+                    height:12px;
+                    border-radius:10px;">
+                </div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
 if st.button("Predecir riesgo"):
 
     errores = validar_inputs(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np)
@@ -355,6 +391,25 @@ if st.button("Predecir riesgo"):
         """,
         unsafe_allow_html=True
     )
+
+    # Muestra los parametros en barras
+    st.subheader("Lectura rápida de parámetros")
+
+    col_bar1, col_bar2 = st.columns(2)
+
+    with col_bar1:
+        mostrar_barra_parametro("TAN", tan, 0, 1, "mg/L")
+        mostrar_barra_parametro("NH3", nh3, 0, 0.1, "mg/L")
+        mostrar_barra_parametro("NO2", no2, 0, 0.66, "mg/L")
+        mostrar_barra_parametro("NO3", no3, 0, 3.1, "mg/L")
+        mostrar_barra_parametro("PO4", po4, 0, 0.3, "mg/L")
+
+    with col_bar2:
+        mostrar_barra_parametro("Sulfuro", sulfuro, 0, 0.1, "mg/L")
+        mostrar_barra_parametro("Alcalinidad", alk, 0, 200, "mg/L")
+        mostrar_barra_parametro("pH", ph, 0, 8.2, "")
+        mostrar_barra_parametro("Temperatura", temp, 0, 32, "°C")
+        mostrar_barra_parametro("Relación N:P", r_np, 0, 20, "")
 
     st.subheader("Recomendación general")
     st.write(recomendacion_general)
