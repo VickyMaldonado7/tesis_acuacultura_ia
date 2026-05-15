@@ -541,7 +541,7 @@ with tab1:
 # PESTANA DE CASOS PENDIENTES
 with tab2:
 
-    st.subheader("📋 Casos pendientes")
+    #st.subheader("📋 Casos pendientes")
 
     archivo = "data/historial_predicciones.csv"
 
@@ -570,6 +570,41 @@ with tab2:
                     use_container_width=True
                 )
 
+                st.subheader("Registrar resultado observado")
+
+                id_seleccionado = st.selectbox(
+                    "Seleccione el caso a cerrar",
+                    pendientes["ID_CASO"].tolist()
+                )
+
+                resultado_observado = st.selectbox(
+                    "Resultado observado",
+                    [
+                        "Mejoró",
+                        "Se mantuvo igual",
+                        "Empeoró",
+                        "Requirió intervención adicional"
+                    ]
+                )
+
+                if st.button("Registrar resultado"):
+
+                    historial.loc[
+                        historial["ID_CASO"] == id_seleccionado,
+                        "RESULTADO_REAL"
+                    ] = resultado_observado
+
+                    historial.loc[
+                        historial["ID_CASO"] == id_seleccionado,
+                        "ESTADO_CASO"
+                    ] = "CERRADO"
+
+                    historial.to_csv(archivo, index=False)
+
+                    st.success(
+                        f"Caso #{int(id_seleccionado):03d} cerrado correctamente para futuro reentrenamiento."
+                    )
+
             else:
                 st.info("No existen casos pendientes.")
 
@@ -578,6 +613,8 @@ with tab2:
 
     else:
         st.warning("Todavía no existe historial de casos.")
+
+
 
 # Footer
 st.markdown("""
