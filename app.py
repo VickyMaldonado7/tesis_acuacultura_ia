@@ -38,44 +38,6 @@ div.stButton > button[kind="secondary"] {
 </style>
 """, unsafe_allow_html=True)
 
-def validar_inputs(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np):
-    errores = []
-
-    if tan < 0 or tan > 15:
-        errores.append(f"TAN = {tan} fuera de rango (0 - 15)")
-
-    if nh3 < 0 or nh3 > 1:
-        errores.append(f"NH3T = {nh3} fuera de rango (0 - 1)")
-
-    if no2 < 0 or no2 > 20:
-        errores.append(f"NO2 = {no2} fuera de rango (0 - 20)")
-
-    if no3 < 0 or no3 > 20:
-        errores.append(f"NO3 = {no3} fuera de rango (0 - 20)")
-
-    if po4 < 0 or po4 > 20:
-        errores.append(f"PO4 = {po4} fuera de rango (0 - 20)")
-
-    if sulfuro < 0 or sulfuro > 5:
-        errores.append(f"SULFURO = {sulfuro} fuera de rango (0 - 5)")
-
-    if alk < 0 or alk > 800:
-        errores.append(f"ALK = {alk} fuera de rango (0 - 800)")
-
-    if ph < 4 or ph > 11:
-        errores.append(f"pH = {ph} fuera de rango (4 - 11)")
-
-    if temp < 5 or temp > 50:
-        errores.append(f"TEMP = {temp} fuera de rango (5 - 50 °C)")
-
-    if salinidad < 0 or salinidad > 50:
-        errores.append(f"SALINIDAD = {salinidad} fuera de rango (0 - 50)")
-
-    if r_np < 0 or r_np > 40:
-        errores.append(f"Relación N:P = {r_np} fuera de rango (0 - 40)")
-
-    return errores
-
 modelo = joblib.load("modelo_rf.pkl")
 
 st.set_page_config(page_title="Asistente Técnico Acuícola IA", layout="wide")
@@ -118,6 +80,45 @@ with tab1:
         st.image("assets/Infografia_camaron.png", use_container_width=True)
 
     st.markdown("")
+
+    # Validacion de parametros
+    def validar_inputs(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np):
+        errores = []
+
+        if tan < 0 or tan > 15:
+            errores.append(f"TAN = {tan} fuera de rango (0 - 15)")
+
+        if nh3 < 0 or nh3 > 1:
+            errores.append(f"NH3T = {nh3} fuera de rango (0 - 1)")
+
+        if no2 < 0 or no2 > 20:
+            errores.append(f"NO2 = {no2} fuera de rango (0 - 20)")
+
+        if no3 < 0 or no3 > 20:
+            errores.append(f"NO3 = {no3} fuera de rango (0 - 20)")
+
+        if po4 < 0 or po4 > 20:
+            errores.append(f"PO4 = {po4} fuera de rango (0 - 20)")
+
+        if sulfuro < 0 or sulfuro > 5:
+            errores.append(f"SULFURO = {sulfuro} fuera de rango (0 - 5)")
+
+        if alk < 0 or alk > 800:
+            errores.append(f"ALK = {alk} fuera de rango (0 - 800)")
+
+        if ph < 4 or ph > 11:
+            errores.append(f"pH = {ph} fuera de rango (4 - 11)")
+
+        if temp < 5 or temp > 50:
+            errores.append(f"TEMP = {temp} fuera de rango (5 - 50 °C)")
+
+        if salinidad < 0 or salinidad > 50:
+            errores.append(f"SALINIDAD = {salinidad} fuera de rango (0 - 50)")
+
+        if r_np < 0 or r_np > 40:
+            errores.append(f"Relación N:P = {r_np} fuera de rango (0 - 40)")
+
+        return errores
 
     # Generar recomendaciones para cada parametro
     def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, salinidad, r_np, pred):
@@ -266,7 +267,7 @@ with tab1:
         return alertas_principales, recomendacion_general
 
     # Guardar registros nuevos
-    def guardar_caso(data, pred, confianza, recomendacion_general, alertas_principales, accion_tomada, resultado_real):
+    def guardar_caso(data, pred, confianza, recomendacion_general, alertas_principales, accion_tomada):
         archivo = "data/historial_predicciones.csv"
 
         if os.path.exists(archivo):
@@ -286,7 +287,6 @@ with tab1:
         )
         registro["FECHA_REGISTRO"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         registro["ACCION_TOMADA"] = accion_tomada
-        registro["RESULTADO_REAL"] = resultado_real
 
         if os.path.exists(archivo):
             registro.to_csv(archivo, mode="a", header=False, index=False)
@@ -295,7 +295,7 @@ with tab1:
 
         return numero_caso
 
-    # Muestra las barras de parametros para una lectura rapida
+    # Mostrar las barras de parametros para una lectura rapida
     def mostrar_barra_parametro(nombre, valor, minimo, maximo, limite_ideal, unidad=""):
 
         porcentaje = max(0, min(1, valor / maximo))
@@ -517,16 +517,6 @@ with tab1:
         ]
     )
 
-    resultado_real = st.selectbox(
-        "Resultado observado",
-        [
-            "Pendiente",
-            "Mejoró",
-            "Se mantuvo igual",
-            "Empeoró"
-        ]
-    )
-
     if st.button("Guardar caso"):
         if "data" in st.session_state:
             numero_caso = guardar_caso(
@@ -535,13 +525,13 @@ with tab1:
                 st.session_state["confianza"],
                 st.session_state["recomendacion_general"],
                 st.session_state["alertas_principales"],
-                st.session_state["accion_tomada"],
-                st.session_state["resultado_real"]
+                st.session_state["accion_tomada"]
             )
             st.success(f"Caso #{numero_caso:03d} guardado correctamente para futuro reentrenamiento.")
         else:
             st.warning("Primero debe ejecutar una predicción antes de guardar el caso.")
 
+    # Footer
     st.markdown("""
     <hr style="margin-top:40px; margin-bottom:15px; border: none; border-top: 1px solid #2d3748;">
 
