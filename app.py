@@ -350,9 +350,11 @@ with tab1:
 
         data["ID_PISCINA"] = id_piscina
 
-        pred = modelo.predict(data)[0]
+        data_modelo = data.drop(columns=["ID_PISCINA"])
 
-        probabilidades = modelo.predict_proba(data)[0]
+        pred = modelo.predict(data_modelo)[0]
+
+        probabilidades = modelo.predict_proba(data_modelo)[0]
 
         confianza = max(probabilidades) * 100
 
