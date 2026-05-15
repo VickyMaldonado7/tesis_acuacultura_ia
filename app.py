@@ -503,7 +503,7 @@ with tab1:
     # Seguimiento del caso para analisis
     st.subheader("Seguimiento del caso")
 
-    accion_tomada = st.selectbox(
+    accion_tomada = st.multiselect(
         "Acción tomada",
         [
             "Ninguna",
@@ -531,8 +531,8 @@ with tab1:
                 st.session_state["confianza"],
                 st.session_state["recomendacion_general"],
                 st.session_state["alertas_principales"],
-                accion_tomada,
-                "Pendiente",
+                "; ".join(accion_tomada) if accion_tomada else "Pendiente",
+                "Sin resultados observados",
                 estado_caso="PENDIENTE"
             )
             st.success(f"Borrador del caso #{numero_caso:03d} guardado correctamente.")
