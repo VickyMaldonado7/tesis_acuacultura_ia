@@ -519,6 +519,7 @@ with tab1:
         ]
     )
 
+    # Boton que deja las predicciones en pendiente hasta registrar el resultado observado
     if st.button("Guardar borrador"):
         if "data" in st.session_state:
             numero_caso = guardar_caso(
@@ -535,17 +536,19 @@ with tab1:
         else:
             st.warning("Primero debe ejecutar una predicción antes de guardar el borrador.")
 
-    # Footer
-    st.markdown("""
-    <hr style="margin-top:40px; margin-bottom:15px; border: none; border-top: 1px solid #2d3748;">
 
-    <div style="
-        text-align:center;
-        color:#94a3b8;
-        font-size:14px;
-        padding-bottom:20px;
-    ">
-        Sistema de apoyo técnico acuícola basado en inteligencia artificial<br>
-        Modelo Random Forest para predicción de Nivel de Riesgo Sanitario (NRS) · Proyecto Integrador · 2026
-    </div>
-    """, unsafe_allow_html=True)
+
+# Footer
+st.markdown("""
+<hr style="margin-top:40px; margin-bottom:15px; border: none; border-top: 1px solid #2d3748;">
+
+<div style="
+    text-align:center;
+    color:#94a3b8;
+    font-size:14px;
+    padding-bottom:20px;
+">
+    Sistema de apoyo técnico acuícola basado en inteligencia artificial<br>
+    Modelo Random Forest para predicción de Nivel de Riesgo Sanitario (NRS) · Proyecto Integrador · 2026
+</div>
+""", unsafe_allow_html=True)
