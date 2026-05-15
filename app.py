@@ -44,10 +44,12 @@ st.set_page_config(page_title="Asistente Técnico Acuícola IA", layout="wide")
 
 st.title("Asistente Técnico Acuícola basado en IA")
 
-tab1, tab2 = st.tabs([
+tab1, tab2, tab3 = st.tabs([
     "📊 Predicción",
-    "📋 Casos pendientes"
+    "📋 Casos pendientes",
+    "✅ Casos resueltos"
 ])
+
 
 # PESTANA DE PREDICCION
 with tab1:
@@ -543,8 +545,6 @@ with tab1:
 # PESTANA DE CASOS PENDIENTES
 with tab2:
 
-    #st.subheader("📋 Casos pendientes")
-
     archivo = "data/historial_predicciones.csv"
 
     if os.path.exists(archivo):
@@ -575,7 +575,7 @@ with tab2:
                 st.subheader("Registrar resultado observado")
 
                 id_seleccionado = st.selectbox(
-                    "Seleccione el caso a cerrar",
+                    "Seleccione el caso a resolver",
                     pendientes["ID_CASO"].tolist()
                 )
 
@@ -617,6 +617,46 @@ with tab2:
         st.warning("Todavía no existe historial de casos.")
 
 
+# PESTANA DE CASOS RESUELTOS / HISTORIAL
+with tab3:
+
+    archivo = "data/historial_predicciones.csv"
+
+    if os.path.exists(archivo):
+
+        historial = pd.read_csv(archivo)
+
+        if "ESTADO_CASO" in historial.columns:
+
+            resueltos = historial[
+                historial["ESTADO_CASO"] == "CERRADO"
+            ]
+
+            if len(resueltos) > 0:
+
+                st.dataframe(
+                    resueltos[
+                        [
+                            "ID_CASO",
+                            "ID_PISCINA",
+                            "FECHA_REGISTRO",
+                            "PREDICCION_NRS",
+                            "ACCION_TOMADA",
+                            "RESULTADO_REAL",
+                            "ESTADO_CASO"
+                        ]
+                    ],
+                    use_container_width=True
+                )
+
+            else:
+                st.info("No existen casos resueltos todavía.")
+
+        else:
+            st.warning("El historial existe, pero aún no tiene la columna ESTADO_CASO.")
+
+    else:
+        st.warning("Todavía no existe historial de casos.")
 
 # Footer
 st.markdown("""
