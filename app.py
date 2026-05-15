@@ -49,6 +49,7 @@ tab1, tab2 = st.tabs([
     "📋 Casos pendientes"
 ])
 
+# PESTANA DE PREDICCION
 with tab1:
 
     st.markdown(
@@ -537,6 +538,46 @@ with tab1:
             st.warning("Primero debe ejecutar una predicción antes de guardar el borrador.")
 
 
+# PESTANA DE CASOS PENDIENTES
+with tab2:
+
+    st.subheader("📋 Casos pendientes")
+
+    archivo = "data/historial_predicciones.csv"
+
+    if os.path.exists(archivo):
+
+        historial = pd.read_csv(archivo)
+
+        if "ESTADO_CASO" in historial.columns:
+
+            pendientes = historial[historial["ESTADO_CASO"] == "PENDIENTE"]
+
+            if len(pendientes) > 0:
+
+                st.dataframe(
+                    pendientes[
+                        [
+                            "ID_CASO",
+                            "ID_PISCINA",
+                            "FECHA_REGISTRO",
+                            "PREDICCION_NRS",
+                            "ACCION_TOMADA",
+                            "RESULTADO_REAL",
+                            "ESTADO_CASO"
+                        ]
+                    ],
+                    use_container_width=True
+                )
+
+            else:
+                st.info("No existen casos pendientes.")
+
+        else:
+            st.warning("El historial existe, pero aún no tiene la columna ESTADO_CASO. Guarda un nuevo borrador para actualizar el formato.")
+
+    else:
+        st.warning("Todavía no existe historial de casos.")
 
 # Footer
 st.markdown("""
