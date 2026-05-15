@@ -389,7 +389,7 @@ if st.button("Predecir riesgo"):
     # Muestra los parametros en barras y el radar
     st.subheader("Lectura rápida de parámetros")
 
-    col_bar1, col_bar2, col_radar = st.columns([1.2, 1.2, 1])
+    col_bar1, col_bar2, col_radar = st.columns([1, 1, 1.4])
 
     with col_bar1:
 
