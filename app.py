@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import plotly.graph_objects as go
 
 from datetime import datetime
 import os
@@ -255,7 +256,7 @@ def generar_recomendaciones(tan, nh3, no2, no3, po4, sulfuro, alk, ph, temp, sal
     return alertas_principales, recomendacion_general
 
 # Guardar registros nuevos
-def guardar_caso(data, pred, confianza, recomendacion_general, alertas_principales):
+def guardar_caso(data, pred, confianza, recomendacion_general, alertas_principales, accion_tomada, resultado_real):
     archivo = "data/historial_predicciones.csv"
 
     if os.path.exists(archivo):
@@ -273,6 +274,8 @@ def guardar_caso(data, pred, confianza, recomendacion_general, alertas_principal
         [f"{a['parametro']} {a['direccion']}: {a['mensaje']}" for a in alertas_principales]
     )
     registro["FECHA_REGISTRO"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    registro["ACCION_TOMADA"] = accion_tomada
+    registro["RESULTADO_REAL"] = resultado_real
 
     if os.path.exists(archivo):
         registro.to_csv(archivo, mode="a", header=False, index=False)
@@ -475,6 +478,38 @@ if st.button("Predecir riesgo"):
     else:
         st.success("No se detectaron desviaciones relevantes en los parámetros ingresados.")
 
+# Boton seguimiento del caso para analisis
+st.subheader("Seguimiento del caso")
+
+accion_tomada = st.selectbox(
+    "Acción tomada",
+    [
+        "Ninguna",
+        "Recambio de agua",
+        "Aumento de aireación",
+        "Reducción de alimentación",
+        "Corrección química",
+        "Aplicación de bacterias",
+        "Aplicación de biorremediacion",
+        "Aplicación de fertilizacion",
+        "Aplicación de carbonatos",
+        "Aplicación de silicatos",
+        "Aplicación de bionutrientes",
+        "Aplicación de producto para reducir fosfatos",
+        "Otra"
+    ]
+)
+
+resultado_real = st.selectbox(
+    "Resultado observado",
+    [
+        "Pendiente",
+        "Mejoró",
+        "Se mantuvo igual",
+        "Empeoró"
+    ]
+)
+
 if st.button("Guardar caso"):
     if "data" in st.session_state:
         numero_caso = guardar_caso(
@@ -482,7 +517,9 @@ if st.button("Guardar caso"):
             st.session_state["pred"],
             st.session_state["confianza"],
             st.session_state["recomendacion_general"],
-            st.session_state["alertas_principales"]
+            st.session_state["alertas_principales"],
+            st.session_state["accion_tomada"],
+            st.session_state["resultado_real"]
         )
         st.success(f"Caso #{numero_caso:03d} guardado correctamente para futuro reentrenamiento.")
     else:
