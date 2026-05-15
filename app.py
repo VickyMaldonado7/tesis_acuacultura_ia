@@ -267,7 +267,7 @@ with tab1:
         return alertas_principales, recomendacion_general
 
     # Guardar registros nuevos
-    def guardar_caso(data, pred, confianza, recomendacion_general, alertas_principales, accion_tomada):
+    def guardar_caso(data, pred, confianza, recomendacion_general, alertas_principales, accion_tomada, resultado_real="Pendiente", estado_caso="PENDIENTE"):
         archivo = "data/historial_predicciones.csv"
 
         if os.path.exists(archivo):
@@ -287,6 +287,8 @@ with tab1:
         )
         registro["FECHA_REGISTRO"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         registro["ACCION_TOMADA"] = accion_tomada
+        registro["RESULTADO_REAL"] = resultado_real
+        registro["ESTADO_CASO"] = estado_caso
 
         if os.path.exists(archivo):
             registro.to_csv(archivo, mode="a", header=False, index=False)
@@ -495,7 +497,7 @@ with tab1:
         else:
             st.success("No se detectaron desviaciones relevantes en los parámetros ingresados.")
 
-    # Boton seguimiento del caso para analisis
+    # Seguimiento del caso para analisis
     st.subheader("Seguimiento del caso")
 
     accion_tomada = st.selectbox(
@@ -517,7 +519,7 @@ with tab1:
         ]
     )
 
-    if st.button("Guardar caso"):
+    if st.button("Guardar borrador"):
         if "data" in st.session_state:
             numero_caso = guardar_caso(
                 st.session_state["data"],
@@ -525,11 +527,13 @@ with tab1:
                 st.session_state["confianza"],
                 st.session_state["recomendacion_general"],
                 st.session_state["alertas_principales"],
-                st.session_state["accion_tomada"]
+                st.session_state["accion_tomada"],
+                "Pendiente",
+                estado_caso="PENDIENTE"
             )
-            st.success(f"Caso #{numero_caso:03d} guardado correctamente para futuro reentrenamiento.")
+            st.success(f"Borrador del caso #{numero_caso:03d} guardado correctamente.")
         else:
-            st.warning("Primero debe ejecutar una predicción antes de guardar el caso.")
+            st.warning("Primero debe ejecutar una predicción antes de guardar el borrador.")
 
     # Footer
     st.markdown("""
