@@ -531,7 +531,7 @@ with tab1:
                 st.session_state["confianza"],
                 st.session_state["recomendacion_general"],
                 st.session_state["alertas_principales"],
-                st.session_state["accion_tomada"],
+                accion_tomada,
                 "Pendiente",
                 estado_caso="PENDIENTE"
             )
