@@ -405,6 +405,7 @@ if st.button("Predecir riesgo"):
         mostrar_barra_parametro("Alcalinidad", alk, 0, 400, 200, "mg/L")
         mostrar_barra_parametro("pH", ph, 0, 14, 8.5, "")
         mostrar_barra_parametro("Temperatura", temp, 0, 40, 32, "°C")
+        mostrar_barra_parametro("Salinidad", salinidad, 0, 40, 35, "ppt")
         mostrar_barra_parametro("Relación N:P", r_np, 0, 20, 10, "")
     
     with col_radar:
@@ -413,12 +414,12 @@ if st.button("Predecir riesgo"):
 
         categorias = [
             "TAN", "NH3", "NO2", "NO3", "PO4",
-            "Sulfuro", "Alk", "pH", "Temp", "N:P"
+            "Sulfuro", "Alk", "pH", "Temp", "Sal", "N:P"
         ]
 
         valores = [
             tan, nh3, no2, no3, po4,
-            sulfuro, alk/400, ph/14, temp/40, r_np/20
+            sulfuro, alk/400, ph/14, temp/40, salinidad/40, r_np/20
         ]
 
         limites = [0.5] * len(categorias)
